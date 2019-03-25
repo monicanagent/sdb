@@ -1,0 +1,33 @@
+{
+  "name": "sdb",
+  "version": "0.1.0",
+  "description": "Services Descriptor Bundle data encoding and decoding library.",
+  "main": "index.js",
+  "scripts": {
+    "docs": "jsdoc . -r -c ./jsdoc.json -d ./docs/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "homepage": "https://github.com/monicanagent/sdb",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monicanagent/sdb"
+  },
+  "bugs": {
+    "url": "https://github.com/monicanagent/sdb/issues"
+  },
+  "keywords": [
+    "sdb",
+    "services",
+    "descriptor",
+    "bundle",
+    "utility",
+    "utilities",
+    "utils",
+    "client",
+    "server",
+    "peer",
+    "p2p"
+  ],
+  "author": "Patrick Bay (Monican Agent)",
+  "license": "MIT"
+}
