@@ -19,19 +19,8 @@ module.exports = class SDB {
 
    /**
    * Creates a new SDB instance.
-   *
-   * @param {String|Buffer|Array} [sdbdata=null] Binary SDB data as either an Ascii85-encoded
-   * string, Base64-encoded string, a native Buffer, or an existing JavaScript entity data
-   * array to use as-is. If omitted or null, an empty instance is created.
-   * @param {String} [encoding=null] If the supplied <code>sdbdata</code> parameter
-   * is a string, it will be decoded with this encoding type ("base85" or "base64").
-   * If <code>null</code> or an empty string, an attempt will be made to automatically
-   * detect the encoding.
    */
-   constructor(sdbdata=null, encoding=null) {
-      if (sdbdata != null) {
-         this.decode(sdbdata);
-      }
+   constructor() {
    }
 
    /**
@@ -75,11 +64,18 @@ module.exports = class SDB {
    *
    * @param {String} [encoding="base85"] The desired data encoding to use,
    * either "base85" or "base64".
+   * @param {Function} [processPipe=null] An optional processing function
+   * to be applied to the SDB binary Buffer before applying the <code>encoding</code>.
+   * If the referenced function is asynchronous (it returns a <code>Promise</code>),
+   * then This function will also return a <code>Promise</code> that will
+   * resolve when the <code>processPipe</code> has resolved, otherwise
+   * this function will be trated as a synchronous inline function.
    *
-   * @return {String} The SDB [data]{@link SDB@data} in the desired encoding.
+   * @return {Promise} An asynchronous promise is returned that resolves withthe
+   * SDB [data]{@link SDB@data} in the desired encoding.
    *
    */
-   encode(encoding="base85") {
+   encode(encoding="base85", processPipe=null) {
       if (this.data == null) {
          throw (new Error("No SDB to encode."));
       }
@@ -96,14 +92,42 @@ module.exports = class SDB {
       newLength = entitiesBuff.length + 1;
       entitiesBuff = Buffer.concat([versionBuff, entitiesBuff], newLength);
       this._bin = entitiesBuff;
-      if ((encoding == "base85") || (encoding == "ascii85")) {
-         var returnStr = this.bufferToBase85(entitiesBuff);
-      } else if (encoding == "base64") {
-         returnStr = entitiesBuff.toString(encoding);
-      } else if (encoding == "none") {
-         returnStr = null;
-      }
-      return (returnStr);
+      var promise = new Promise((resolve, reject) => {
+         if (processPipe != null) {
+            var result = processPipe(entitiesBuff);
+            if (result instanceof Promise) {
+               result.then(entitiesBuff => {
+                  if ((encoding == "base85") || (encoding == "ascii85")) {
+                     var returnStr = this.bufferToBase85(entitiesBuff);
+                  } else if (encoding == "base64") {
+                     returnStr = entitiesBuff.toString(encoding);
+                  } else if (encoding == "none") {
+                     returnStr = null;
+                  }
+                  resolve(returnStr);
+               })
+            } else {
+               if ((encoding == "base85") || (encoding == "ascii85")) {
+                  var returnStr = this.bufferToBase85(entitiesBuff);
+               } else if (encoding == "base64") {
+                  returnStr = entitiesBuff.toString(encoding);
+               } else if (encoding == "none") {
+                  returnStr = null;
+               }
+               resolve(returnStr);
+            }
+         } else {
+            if ((encoding == "base85") || (encoding == "ascii85")) {
+               var returnStr = this.bufferToBase85(entitiesBuff);
+            } else if (encoding == "base64") {
+               returnStr = entitiesBuff.toString(encoding);
+            } else if (encoding == "none") {
+               returnStr = null;
+            }
+            resolve(returnStr);
+         }
+      });
+      return (promise);
    }
 
    /**
@@ -118,13 +142,37 @@ module.exports = class SDB {
    * decoded to [data]{@link SDB@data}.
    * @param {String} [encoding=null] The string encoding used for <code>SDBData</code>
    * if it's a string. If <code>SDBData</code> is not a string this parameter is ignored.
+   * If <code>processPipe</code> was supplied and was asynchronous (it returned a
+   * <code>Promise</code>) then a <code>Promise</code> will also be returned here and
+   * resolved when the <code>processPipe</code> resolves.
+   * @param {Function} [processPipe=null] An optional processing function
+   * to be applied to the decoded but unparsed SDB binary Buffer before applying
+   * the <code>decoding</code>.
+   *
+   * @return {Promise} An asynchronous promise is returned that resolves when the
+   * decoding process has completed.
    */
-   decode(SDBData, encoding=null) {
+   decode(SDBData, encoding=null, processPipe=null) {
       if (SDBData instanceof Array) {
          //no need to parse this
          this._data = SDBData;
-         this.encode("none"); //this sets bin property
-         return;
+         var promise = new Promise((resolve, reject) => {
+            this.encode("none").then(result => {
+               if (processPipe != null) {
+                  if (processPipe instanceof Promise) {
+                     processPipe(this.bin).then(result => {
+                        resolve (this.bin);
+                     })
+                  } else {
+                     result = processPipe(this.bin);
+                     resolve (this.bin);
+                  }
+               } else {
+                  resolve (this.bin);
+               }
+            });
+         });
+         return (promise);
       } else if (SDBData instanceof Buffer) {
          //already native
          var decodeBuff = SDBData;
@@ -139,21 +187,66 @@ module.exports = class SDB {
       } else {
          throw (new Error("Data not recignized."));
       }
-      var sdbVersion = decodeBuff.readUInt8(0);
-      if (sdbVersion != SDB.version) {
-         //future revisions may need more comlex checks
-         throw (new Error("SDB verion "+sdbVersion+ " does not match supported version "+SDB.version));
-      }
-      this._data = new Array();
-      var historyArr = new Array();
-      var entityIndex = 0;
-      var offset = 1;
-      while (offset < decodeBuff.length) {
-         var entityObj = this.readEntity(decodeBuff, offset);
-         offset = entityObj.nextOffset;
-         this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
-         entityIndex++;
-      }
+      var promise = new Promise((resolve, reject) => {
+         if (processPipe != null) {
+            var response = processPipe(decodeBuff);
+            if (response instanceof Promise) {
+               response.then(decodeBuff => {
+                  var sdbVersion = decodeBuff.readUInt8(0);
+                  if (sdbVersion != SDB.version) {
+                     //future revisions may need more comlex checks
+                     throw (new Error("SDB verion "+sdbVersion+ " does not match supported version "+SDB.version));
+                  }
+                  this._data = new Array();
+                  var historyArr = new Array();
+                  var entityIndex = 0;
+                  var offset = 1;
+                  while (offset < decodeBuff.length) {
+                     var entityObj = this.readEntity(decodeBuff, offset);
+                     offset = entityObj.nextOffset;
+                     this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
+                     entityIndex++;
+                  }
+               });
+               resolve(true);
+            } else {
+               var sdbVersion = decodeBuff.readUInt8(0);
+               if (sdbVersion != SDB.version) {
+                  //future revisions may need more comlex checks
+                  throw (new Error("SDB verion "+sdbVersion+ " does not match supported version "+SDB.version));
+               }
+               this._data = new Array();
+               var historyArr = new Array();
+               var entityIndex = 0;
+               var offset = 1;
+               while (offset < decodeBuff.length) {
+                  var entityObj = this.readEntity(decodeBuff, offset);
+                  offset = entityObj.nextOffset;
+                  this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
+                  entityIndex++;
+               }
+               resolve(true);
+            }
+         } else {
+            var sdbVersion = decodeBuff.readUInt8(0);
+            if (sdbVersion != SDB.version) {
+               //future revisions may need more comlex checks
+               throw (new Error("SDB verion "+sdbVersion+ " does not match supported version "+SDB.version));
+            }
+            this._data = new Array();
+            var historyArr = new Array();
+            var entityIndex = 0;
+            var offset = 1;
+            while (offset < decodeBuff.length) {
+               var entityObj = this.readEntity(decodeBuff, offset);
+               offset = entityObj.nextOffset;
+               this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
+               entityIndex++;
+            }
+            resolve(true);
+         }
+      });
+      return (promise);
    }
 
    /**
