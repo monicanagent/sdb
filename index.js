@@ -185,7 +185,7 @@ module.exports = class SDB {
             decodeBuff = Buffer.from(SDBData, "base64");
          }
       } else {
-         throw (new Error("Data not recignized."));
+         throw (new Error("Data type not recognized."));
       }
       var promise = new Promise((resolve, reject) => {
          if (processPipe != null) {

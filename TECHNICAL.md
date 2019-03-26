@@ -2,7 +2,7 @@
 
 ## Background
 
-SDP was created for use in CypherPoker.JS connectivity establishment. It is offered independently in the hope that it may also be useful outside of his scope.
+SDP was created for use in CypherPoker.JS connectivity establishment. It is offered independently in the hope that it may also be useful outside of this scope.
 
 ## Motivation
 
