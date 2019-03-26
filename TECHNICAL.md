@@ -130,7 +130,7 @@ In this example the `name`, `transport`, `protocol`, and `host` properties are t
 }]
 ```
 
-In the binary format it would take more space to replace the `transport` and `protocol` properties with references, they're copied. The `name`, `host`, and `protocol` values, however, are replaced with a 0 meaning "get the value for these from the entity at index 0".
+In the binary format it would take more space to replace the `transport` and `protocol` properties with references so they're copied (this would not be true in the JSON version above). The `name`, `host`, and `protocol` values, however, are replaced with a 0 meaning "get the value for these from the entity at index 0".
 
 ## SDB Binary Data Structure
 
