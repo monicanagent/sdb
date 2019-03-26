@@ -224,7 +224,7 @@ Two types of host are defined: resolved (by IP address) or named (typically requ
 1 - IPv6 (resolved) - followed by the 16 bytes of the IPv6 address.<br/>
 2 - Named - followed by 2 bytes denoting the length of the following string, followed by the string (max length 65535 bytes)
 
-###### Type 5 - _Port_ (4 bytes)
+###### Type 5 - _Port_ (5 bytes)
 
 If excluded, the default port for the specified protocol should be used (e.g. 80 for `HTTP`).
 
