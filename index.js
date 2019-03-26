@@ -78,7 +78,7 @@ module.exports = class SDB {
    encode(encoding="base85", processPipe=null) {
       if (this.data == null) {
          throw (new Error("No SDB to encode."));
-
+      }
       var entitiesBuff = Buffer.alloc(0);
       var historyArr = new Array();
       for (var count=0; count < this.data.length; count++) {
