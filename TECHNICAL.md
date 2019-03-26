@@ -230,7 +230,7 @@ If excluded, the default port for the specified protocol should be used (e.g. 80
 
 ###### Type 6 - _Parameters_ (4 to 16777215 bytes, optional)
 
-Followed by 3 bytes indicating the length of the following string, and then the string itself. The parameters string may be URL-encoded name-value, JSON data, or other data types. Max string length is therefore 16777215 bytes.
+Followed by 3 bytes indicating the length of the following string, and then the string itself. The parameters string may be URL-encoded name-value pairs, JSON data, CSV data, plain text, or other data types. Max string length is therefore 16777215 bytes.
 
 ###### Type 7 - _Name Reference_ (3 bytes)
 
