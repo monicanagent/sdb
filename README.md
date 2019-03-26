@@ -10,12 +10,12 @@ Detailed background and technical information can be found in [TECHNICAL.md](./T
 
 1. Install the module from npm:
 
-`npm i sdbnode`
+`npm i sdb-node`
 
 2. Include in your code:
 
 ```
-const SDB = require("SDB");
+const SDB = require("sdb-node");
 var sdb = new SDB();
 ```
 
@@ -188,4 +188,3 @@ var sdb = new SDB();
 #### And More
 
 Other examples of SDB encoding and decoding using a mixture of asynchronous and synchronous functions as well as processing pipes can be found in the examples directory: [https://github.com/monicanagent/sdb/blob/master/example/](https://github.com/monicanagent/sdb/blob/master/example/)
-

@@ -3,7 +3,7 @@
 /**
 * @file Services Descriptor Bundle encoding and decoding library.
 *
-* @version 0.1.0
+* @version 0.1.3
 * @author Patrick Bay (Monican Agent)
 * @copyright MIT License
 */
