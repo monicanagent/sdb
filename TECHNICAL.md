@@ -18,7 +18,7 @@ The SDB library includes encoding and decoding pipes that make [encryption of SD
 
 Information about a single connection within SDB data is called an _entity_. Entities contain connectivity information, or _data_, such as a peer or service URL, port, transport, protocol, and additional free-form parameters when other types of connectivity data is unsuitable (in relay networks, for example).
 
-All of the information associated with a single _entity_ is called a _descriptor_. Multiple _descriptors_ can be grouped together to form a _bundle_. _Descriptor bundles_ are used by the application to connect to various _services_ such as peer-to-peer rendezvous functionality, various API services, and so on.
+All of the information associated with a single _entity_ is called a _descriptor_. Multiple _descriptors_ can be grouped together to form a _bundle_. _Descriptor bundles_ are used by a software application to connect to various _services_ such as peer-to-peer rendezvous functionality, various API services, and so on.
 
 ## SDB Format
 
