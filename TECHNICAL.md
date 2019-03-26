@@ -22,7 +22,7 @@ Information about a single connection within SDB data is called an _entity_. Ent
 
 The best way to illustrate the SDB format is through a couple of native JavaScript (JSON) examples:
 
-### Full Entity Descriptor JSON data
+### Entity Descriptor JSON data
 ```
 {
    "entity": "api or p2p or peer",
@@ -36,7 +36,7 @@ The best way to illustrate the SDB format is through a couple of native JavaScri
 }
 ```
 
-### Full Entity Descriptor JSON data, compact form
+### Entity Descriptor JSON data, compact form
 ```
 {
    "entity": "api or p2p or peer",
