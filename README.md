@@ -21,9 +21,9 @@ var sdb = new SDB();
 
 ### Browser
 
-1. Include the SDB library bundle in your page header:
+1. Include the SDB library bundle in your page `<head>`:
 
-`<script src="https://raw.githubusercontent.com/monicanagent/sdb/master/bundle.min.js" type="text/javascript" language="javascript"></script>`
+`<script src="https://monicanagent.github.io/sdb/bundle.min.js" type="text/javascript" language="javascript"></script>`
 
 2. Include in your code:
 
