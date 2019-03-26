@@ -2087,6 +2087,9 @@ class SDB {
       var historyArr = new Array();
       for (var count=0; count < this.data.length; count++) {
          var entityData = this.data[count];
+         if (typeof(entityData.entity) != "string") {
+            throw (new Error ("Missing or wrong type \"+entity+\" property."));
+         }
          var encodedEntity = this.encodeEntity(entityData, count, historyArr);
          var newLength = entitiesBuff.length + encodedEntity.length;
          entitiesBuff = Buffer.concat([entitiesBuff, encodedEntity], newLength);
