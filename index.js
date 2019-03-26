@@ -559,7 +559,7 @@ module.exports = class SDB {
             //type
             var typeVal = entityBuffer.readUInt8(offset + 1);
             typeHeaderSize += 1;
-            returnObj.name = "type";
+            returnObj.name = "transport";
             switch (typeVal) {
                case 0:
                   returnObj.value = "http";
@@ -852,7 +852,7 @@ module.exports = class SDB {
                encData.push(propValue.charCodeAt(count));
             }
             break;
-         case "type":
+         case "transport":
             encData.push(2);
             switch (propValue) {
                case "http":

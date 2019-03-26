@@ -15,7 +15,7 @@ var JSONSDB = [
       "entity":"api",
       "name": "CypherPoker.JS Services",
       "description": "API services endpoint",
-      "type":"wss",
+      "transport":"wss",
       "url":"ws://192.168.0.1",
       "port":8090
    },
@@ -23,7 +23,7 @@ var JSONSDB = [
       "entity":"p2p",
       "name": "CypherPoker.JS Services",
       "description": "P2P rendezvous endpoint",
-      "type":"wss",
+      "transport":"wss",
       "url":"ws://192.168.0.3",
       "port":8091
    }
