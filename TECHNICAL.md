@@ -16,7 +16,7 @@ The SDB library includes encoding and decoding pipes that make [encryption of SD
 
 ## Terminology
 
-Information about a single connection within SDB data is called an _entity_. Entities may have information such as a peer or service URL, port, transport, protocol, and additional free-form parameters when this type of information is unsuitable (in relay networks, for example).
+Information about a single connection within SDB data is called an _entity_. Entities contain connectivity information, or _data_, such as a peer or service URL, port, transport, protocol, and additional free-form parameters when other types of connectivity data is unsuitable (in relay networks, for example).
 
 ## SDB Format
 
