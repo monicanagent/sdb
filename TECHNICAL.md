@@ -191,11 +191,11 @@ This byte represents the name portion of the correlated JavaScript data for each
 
 Each of the items in the list above are detailed below:
 
-###### Type 0 - _Name_ (2 to 65537 bytes)
+###### Type 0 - _Name_ (3 to 65537 bytes)
 
 Followed by 2 bytes indicating the length of the following string, and then the string itself. Max string length is therefore 65535 bytes.
 
-###### Type 1 - _Description_ (2 to 65537 bytes)
+###### Type 1 - _Description_ (3 to 65537 bytes)
 
 Followed by 2 bytes indicating the length of the following string, and then the string itself. Max string length is therefore 65535 bytes.
 
@@ -218,7 +218,7 @@ The `Transport` may different from the `Protocol` in that the `Protocol` is used
 
 Note that WebRTC requires external negotiation (using one of the listed protocols, for example), so it's not included.
 
-###### Type 4 - Host (3 to 65537 bytes)
+###### Type 4 - _Host_ (3 to 65537 bytes)
 
 Two types of host are defined: resolved (by IP address) or named (typically requires resolution).
 
@@ -226,33 +226,33 @@ Two types of host are defined: resolved (by IP address) or named (typically requ
 1 - IPv6 (resolved) - followed by the 16 bytes of the IPv6 address.<br/>
 2 - Named - followed by 2 bytes denoting the length of the following string, followed by the string (max length 65535 bytes)
 
-###### Type 5 - _Port_ (4 bytes)
+###### Type 5 - _Port_ (5 bytes)
 
 If excluded, the default port for the specified protocol should be used (e.g. 80 for `HTTP`).
 
-###### Type 6 - Parameters (3 to 16777215 bytes, optional)
+###### Type 6 - _Parameters_ (4 to 16777215 bytes, optional)
 
 Followed by 3 bytes indicating the length of the following string, and then the string itself. The parameters string may be URL-encoded name-value, JSON data, or other data types. Max string length is therefore 16777215 bytes.
 
-###### Type 7 - Name Reference_ (2 bytes)
+###### Type 7 - _Name Reference_ (3 bytes)
 
-The index of a preceding entity's name value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's name value to use in this entity.
 
-###### Type 8 - _Description Reference_ (2 bytes)
+###### Type 8 - _Description Reference_ (3 bytes)
 
-The index of a preceding entity's description value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's description value to use in this entity.
 
-###### Type 9 - _Host Reference_ (2 bytes)
+###### Type 9 - _Host Reference_ (3 bytes)
 
-The index of a preceding entity's host value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's host value to use in this entity.
 
-###### Type 10 - _Port Reference_ (2 bytes)
+###### Type 10 - _Port Reference_ (3 bytes)
 
-The index of a preceding entity's port value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's port value to use in this entity.
 
-###### Type 11 - _Parameters Reference_ (2 bytes)
+###### Type 11 - _Parameters Reference_ (3 bytes)
 
-The index of a preceding entity's parameters value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's parameters value to use in this entity.
 
 
 ## Example
