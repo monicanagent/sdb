@@ -107,7 +107,7 @@ Consider the following example:
    "transport": "wss",
    "protocol": "wss",
    "host": "168.43.68.120",
-   "port": 8091
+   "port": 8090
 }]
 ```
 
