@@ -209,7 +209,7 @@ The entity transport type. Defined types are:
 1 - WebSocket Sessions<br/>
 2 - WebRTC
 
-The `Transport` may different from the `Protocol` in that the `Protocol` is used _over_ the transport; for example, `http` (Protocol) can be sent over `Tor` (Transport). Similarly, `HTTP` transport requests are handled nearly identically in an application whether the protocol is `HTTP` or `HTTPS`. As long as communicating parties are capable it may also be possible to mix seemingly incompatible transports and protocols: `HTTP` (Protocol) sent over `WebRTC` (Transport), for example.
+The `Transport` may differ from the `Protocol` in that the `Protocol` is used _over_ the transport; for example, `http` (Protocol) can be sent over `Tor` (Transport). Similarly, `HTTP` transport requests are handled nearly identically in an application whether the protocol is `HTTP` or `HTTPS`. As long as communicating parties are capable it may also be possible to mix seemingly incompatible transports and protocols: `HTTP` (Protocol) sent over `WebRTC` (Transport), for example.
 
 ###### Type 3 - _Protocol_ (1 byte)
 
