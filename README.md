@@ -1,12 +1,15 @@
 # Services Descriptor Bundle
 
+
 SDP is an efficient and compact binary format used for connectivity establishment between peers, clients, and servers, designed for CypherPoker.JS
 
 Detailed background and technical information can be found in [TECHNICAL.md](./TECHNICAL.md)
 
 ## Usage
 
-### Node.js
+### Node.js 
+
+[![npm (tag)](https://img.shields.io/npm/v/sdb-node/latest.svg)](https://www.npmjs.com/package/sdb-node)
 
 1. Install the module from npm:
 
