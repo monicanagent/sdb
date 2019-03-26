@@ -154,7 +154,7 @@ Each entity begins with a 5 byte header that describes the entity type (`entity`
 
 #### Entity Type (1 byte)
 
-The part of the entity header indicates what type of entity is being described. This correlates with the `transport` property in JavaScript object.
+This part of the entity header indicates what type of entity is being described. This correlates with the `entity` property in JavaScript object.
 
 0 - Services API endpoint (accounts, blockchain, etc.)<br/>
 1 - Peer-to-peer Rendezvous endpoint<br/>
@@ -162,11 +162,11 @@ The part of the entity header indicates what type of entity is being described. 
 
 #### Entity Size (4 bytes)
 
-The total size of the following entity (excluding header). Maximum size 4294967295 bytes. It's unlike that this limit will ever be reached but is required in order to accommodate some of the larger data structures of the entity.
+The total size of the following entity (excluding header). Maximum size 4294967295 bytes. It's unlikely that this limit will ever be reached but is required in order to accommodate some of the larger data structures of the entity.
 
 ### Entity Data
 
-The entity data contains the name-value pairs that would be contained in the JavaScript entity object. Any number of data items may be contained for the entity up the limit specified in the `Entity Size` value. Entity data _may_ be duplicated but unnecessary since only the last data item for any name will be used.
+The entity data contains the binary equivalents of the name-value pairs that would be contained in the JavaScript entity object. Any number of data items may be contained for the entity up the limit specified in the `Entity Size` value. Entity data _may_ be duplicated but this is wasteful since only the last data item for any name will be used.
 
 All data items are optional.
 
@@ -181,9 +181,11 @@ This byte represents the name portion of the correlated JavaScript data for each
 4 - Host<br/>
 5 - Port<br/>
 6 - Parameters<br/>
-7 - Host reference<br/>
-8 - Port reference<br/>
-9 - Parameters reference<br/>
+7 - Name reference<br/>
+8 - Description reference<br/>
+9 - Host reference<br/>
+10 - Port reference<br/>
+11 - Parameters reference<br/>
 
 ##### Entity Data Property Details
 
@@ -205,7 +207,7 @@ The entity transport type. Defined types are:
 1 - WebSocket Sessions<br/>
 2 - WebRTC
 
-The `Transport` may different from the `Protocol` in that the `Protocol` is used _over_ the transport; for example, `http` (Protocol) can be sent over `Tor` (Transport). They may, however, be the same.
+The `Transport` may different from the `Protocol` in that the `Protocol` is used _over_ the transport; for example, `http` (Protocol) can be sent over `Tor` (Transport). Similarly, `HTTP` transport requests are handled nearly identically in an application whether the protocol is `HTTP` or `HTTPS`. As long as communicating parties are capable it may also be possible to mix seemingly incompatible transports and protocols: `HTTP` (Protocol) sent over `WebRTC` (Transport), for example.
 
 ###### Type 3 - _Protocol_ (1 byte)
 
@@ -218,17 +220,15 @@ Note that WebRTC requires external negotiation (using one of the listed protocol
 
 ###### Type 4 - Host (3 to 65537 bytes)
 
-Two types of host are defined: resolved (by IP address) or named (may required resolution).
+Two types of host are defined: resolved (by IP address) or named (typically requires resolution).
 
 0 - IPv4 (resolved) - followed by the 4 bytes of the IPv4 address.<br/>
 1 - IPv6 (resolved) - followed by the 16 bytes of the IPv6 address.<br/>
 2 - Named - followed by 2 bytes denoting the length of the following string, followed by the string (max length 65535 bytes)
 
-These include secure versions (see Protocol Type to differentiate).
-
 ###### Type 5 - _Port_ (4 bytes)
 
-If excluded, the default port for the specified protocol should be used.
+If excluded, the default port for the specified protocol should be used (e.g. 80 for `HTTP`).
 
 ###### Type 6 - Parameters (3 to 16777215 bytes, optional)
 
@@ -257,7 +257,7 @@ The index of a preceding entity's parameters value to use in this entity.
 
 ## Example
 
-The following JavaScript SDB:
+The following JavaScript SDB...
 
 ```
 [{
@@ -280,7 +280,7 @@ The following JavaScript SDB:
 }]
 ```
 
-Is reduced to the following binary SDB (in hexadecimal):
+...is reduced to the following binary SDB (in hexadecimal):
 
 ```
 00 00 00 00  00 3f 00 00
@@ -307,7 +307,9 @@ This is followed by the first 5-byte entity header `00 00 00 00 3f`.
 The first byte of this entity identifies it as a type 0 ("api") entity. The next four bytes denote the size of the entity, in this
 case `0000003f`, or 63 bytes (the next entity starts 64 bytes later).
 
-Now begin the entity's data properties. The first one is a type 0 property (`00`), a `name`. This is followed by 2 bytes denoting the length of the `name` data in this case `0017` or 23 bytes. The following 23 bytes (`43 79 70 68 65 72 ...`) are ASCII values of the data:
+Now the entity's data properties begin.
+
+The first one is a type 0 property (`00`), a `name`. This is followed by 2 bytes denoting the length of the `name` data in this case `0017` or 23 bytes. The following 23 bytes (`43 79 70 68 65 72 ...`), are the ASCII values of the `name` data:
 
 `43` = C<br/>
 `79` = y<br/>
@@ -317,6 +319,14 @@ Now begin the entity's data properties. The first one is a type 0 property (`00`
 `72` = r<br/>
 ...
 
-Or all together: `CypherPoker.JS Services`
+After 23 bytes the following string is assembled: `CypherPoker.JS Services`
 
-As this entity is re-crated its index (in this case 0), is stored so that any entity data _reference_ properties that refer to index 0 actually refer to the data contained in this entity.
+As this entity is re-created its index (in this case 0), is stored so that any entity data _reference_ properties that refer to index 0 actually refer to the data contained in this entity.
+
+All reference entities are exactly 3 bytes long. For example:
+
+```
+07 00 00
+```
+
+This represents a `name` data reference (`7`), which points to entity `0` (`00 00`). When this reference is encountered it would be created as a `name` property with the value of the `name` property of the entity at index `0` (which should already exist at this point).
