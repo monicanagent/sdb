@@ -216,8 +216,6 @@ The `Transport` may different from the `Protocol` in that the `Protocol` is used
 2 - WS<br/>
 3 - WSS<br/>
 
-Note that WebRTC requires external negotiation (using one of the listed protocols, for example), so it's not included.
-
 ###### Type 4 - _Host_ (3 to 65537 bytes)
 
 Two types of host are defined: resolved (by IP address) or named (typically requires resolution).
