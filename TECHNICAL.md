@@ -230,27 +230,27 @@ If excluded, the default port for the specified protocol should be used (e.g. 80
 
 ###### Type 6 - _Parameters_ (4 to 16777215 bytes, optional)
 
-Followed by 3 bytes indicating the length of the following string, and then the string itself. The parameters string may be URL-encoded name-value pairs, JSON data, CSV data, plain text, or other data types. Max string length is therefore 16777215 bytes.
+Followed by 3 bytes indicating the length of the following string, and then the string itself. The parameters string may be URL-encoded name-value pairs, JSON data, CSV data, plain text, or other data types. Max string length is 16777215 bytes.
 
 ###### Type 7 - _Name Reference_ (3 bytes)
 
-Followed by 2 bytes denoting the index of a preceding entity's name value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's `name` value to use in this entity.
 
 ###### Type 8 - _Description Reference_ (3 bytes)
 
-Followed by 2 bytes denoting the index of a preceding entity's description value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's `description` value to use in this entity.
 
 ###### Type 9 - _Host Reference_ (3 bytes)
 
-Followed by 2 bytes denoting the index of a preceding entity's host value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's `host` value to use in this entity.
 
 ###### Type 10 - _Port Reference_ (3 bytes)
 
-Followed by 2 bytes denoting the index of a preceding entity's port value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's `port` value to use in this entity.
 
 ###### Type 11 - _Parameters Reference_ (3 bytes)
 
-Followed by 2 bytes denoting the index of a preceding entity's parameters value to use in this entity.
+Followed by 2 bytes denoting the index of a preceding entity's `parameters` value to use in this entity.
 
 
 ## Example
