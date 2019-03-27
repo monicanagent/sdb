@@ -2007,7 +2007,7 @@ module.exports = Array.isArray || function (arr) {
 /**
 * @file Services Descriptor Bundle encoding and decoding library.
 *
-* @version 0.1.6
+* @version 0.1.7
 * @author Patrick Bay (Monican Agent)
 * @copyright MIT License
 */
@@ -2698,7 +2698,7 @@ class SDB {
                   var IPAddr = String(entityBuffer.readUInt8(offset + 2)) + ".";
                   IPAddr += String(entityBuffer.readUInt8(offset + 3)) + ".";
                   IPAddr += String(entityBuffer.readUInt8(offset + 4)) + ".";
-                  IPAddr += String(entityBuffer.readUInt8(offset + 4));
+                  IPAddr += String(entityBuffer.readUInt8(offset + 5));
                   typeHeaderSize += 4;
                   returnObj.value = IPAddr;
                   returnObj.offset = offset +  typeHeaderSize;
