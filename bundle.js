@@ -2007,7 +2007,7 @@ module.exports = Array.isArray || function (arr) {
 /**
 * @file Services Descriptor Bundle encoding and decoding library.
 *
-* @version 0.1.0
+* @version 0.1.6
 * @author Patrick Bay (Monican Agent)
 * @copyright MIT License
 */
@@ -2033,6 +2033,86 @@ class SDB {
    */
    static get version() {
       return (0);
+   }
+
+   /**
+   * Validates a version 0 SDB entity object to ensure that there are no
+   * invalid or missing data properties.
+   *
+   * @param {Object} entityObj The entity object to validate.
+   *
+   * @return {null|String} A <code>null</code> is returned if all validation
+   * passed, otherwise a string is returned describing the validation failure.
+   *
+   * @static
+   */
+   static validateEntityObject (entityObj) {
+      if (typeof(entityObj) != "object") {
+         return ("Entity must be an object.");
+      }
+      if (entityObj.entity == undefined) {
+         return ("\"entity\" property is required.");
+      }
+      if (typeof(entityObj.entity) != "string") {
+         return ("\"entity\" property must be a string.");
+      }
+      for (var dataType in entityObj) {
+         switch (dataType) {
+            case "entity":
+               var entType = entityObj[dataType];
+               if ((entType != "api") && (entType != "p2p") && (entType != "peer")) {
+                  return ("\""+entType+"\" is not a recognized entity type.");
+               }
+               break;
+            case "name":
+               if (typeof(entityObj[dataType]) != "string") {
+                  return ("\"name\" property must be a string.");
+               }
+               break;
+            case "description":
+               if (typeof(entityObj[dataType]) != "string") {
+                  return ("\"description\" property must be a string.");
+               }
+               break;
+            case "transport":
+               switch (entityObj[dataType]) {
+                  case "http": break;
+                  case "wss": break;
+                  case "webrtc": break;
+                  default:
+                     return ("\""+entityObj[dataType]+"\" is not a recognized transport.");
+                     break;
+               }
+               break;
+            case "protocol":
+               switch (entityObj[dataType]) {
+                  case "http": break;
+                  case "https": break;
+                  case "ws": break;
+                  case "wss": break;
+                  default:
+                     return ("\""+entityObj[dataType]+"\" is not a recognized protocol.");
+                     break;
+               }
+               break;
+            case "host":
+               if (typeof(entityObj[dataType]) != "string") {
+                  return ("\"host\" property must be a string.");
+               }
+               break;
+            case "port":
+               if (typeof(entityObj[dataType]) != "number") {
+                  return ("\"port\" must be a number.");
+               }
+               break;
+            case "parameters":
+               if (typeof(entityObj[dataType]) != "string") {
+                  return ("\"parameters\" property must be a string.");
+               }
+               break;
+         }
+      }
+      return (null); // everything looks okay
    }
 
    /**
@@ -3109,6 +3189,7 @@ class SDB {
       return (false);
    }
 }
+
 window.SDB = SDB;
 }).call(this,require("buffer").Buffer)
 },{"buffer":2}]},{},[5]);
