@@ -2007,7 +2007,7 @@ module.exports = Array.isArray || function (arr) {
 /**
 * @file Services Descriptor Bundle encoding and decoding library.
 *
-* @version 0.1.7
+* @version 0.1.8
 * @author Patrick Bay (Monican Agent)
 * @copyright MIT License
 */
@@ -2289,10 +2289,14 @@ class SDB {
                   var entityIndex = 0;
                   var offset = 1;
                   while (offset < decodeBuff.length) {
-                     var entityObj = this.readEntity(decodeBuff, offset);
-                     offset = entityObj.nextOffset;
-                     this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
-                     entityIndex++;
+                     try {
+                        var entityObj = this.readEntity(decodeBuff, offset);
+                        offset = entityObj.nextOffset;
+                        this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
+                        entityIndex++;
+                     } catch (err) {
+                        offset = decodeBuff.length + 1;
+                     }
                   }
                });
                resolve(true);
@@ -2307,10 +2311,14 @@ class SDB {
                var entityIndex = 0;
                var offset = 1;
                while (offset < decodeBuff.length) {
-                  var entityObj = this.readEntity(decodeBuff, offset);
-                  offset = entityObj.nextOffset;
-                  this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
-                  entityIndex++;
+                  try {
+                     var entityObj = this.readEntity(decodeBuff, offset);
+                     offset = entityObj.nextOffset;
+                     this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
+                     entityIndex++;
+                  } catch (err) {
+                     offset = decodeBuff.length + 1;
+                  }
                }
                resolve(true);
             }
@@ -2325,10 +2333,14 @@ class SDB {
             var entityIndex = 0;
             var offset = 1;
             while (offset < decodeBuff.length) {
-               var entityObj = this.readEntity(decodeBuff, offset);
-               offset = entityObj.nextOffset;
-               this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
-               entityIndex++;
+               try {
+                  var entityObj = this.readEntity(decodeBuff, offset);
+                  offset = entityObj.nextOffset;
+                  this._data.push(this.decodeEntity(entityObj, entityIndex, historyArr));
+                  entityIndex++;
+               } catch (err) {
+                  offset = decodeBuff.length + 1;
+               }
             }
             resolve(true);
          }
@@ -3189,6 +3201,7 @@ class SDB {
       return (false);
    }
 }
+
 
 window.SDB = SDB;
 }).call(this,require("buffer").Buffer)
