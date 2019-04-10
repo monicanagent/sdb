@@ -146,7 +146,7 @@ This structure is made up of the following pieces:
 
 ### SDB Header (1 byte)
 
-0 - Version number, included for forward compatibility checking.
+1 - Version number, included for forward compatibility checking.
 
 ### Entity Header (5 bytes)
 
@@ -207,7 +207,8 @@ The entity transport type. Defined types are:
 
 0 - HTTP<br/>
 1 - WebSocket Sessions<br/>
-2 - WebRTC
+2 - WebSocket Sessions Tunnel<br/>
+3 - WebRTC
 
 The `Transport` may differ from the `Protocol` in that the `Protocol` is used _over_ the transport; for example, `http` (Protocol) can be sent over `Tor` (Transport). Similarly, `HTTP` transport requests are handled nearly identically in an application whether the protocol is `HTTP` or `HTTPS`. As long as communicating parties are capable it may also be possible to mix seemingly incompatible transports and protocols: `HTTP` (Protocol) sent over `WebRTC` (Transport), for example.
 
@@ -330,3 +331,8 @@ All reference entities are exactly 3 bytes long. For example:
 ```
 
 This represents a `name` data reference (`7`), which points to entity `0` (`00 00`). When this reference is encountered it would be created as a `name` property with the value of the `name` property of the entity at index `0` (which should already exist at this point).
+
+## History
+
+`Version 0.1.0 to 0.1.8`: Initial release with bug fixes.<br/><br/>
+`Version 0.2.0`: Added WebSocket Sessions Tunnel transport, fixed parameters decoding, and changed SDB Header version to 1 since this version is incompatible with 0.

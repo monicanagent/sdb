@@ -3,7 +3,7 @@
 /**
 * @file Services Descriptor Bundle encoding and decoding library.
 *
-* @version 0.1.8
+* @version 0.2.1
 * @author Patrick Bay (Monican Agent)
 * @copyright MIT License
 */
@@ -28,7 +28,7 @@ module.exports = class SDB {
    * used with coded binary data.
    */
    static get version() {
-      return (0);
+      return (1);
    }
 
    /**
@@ -74,6 +74,7 @@ module.exports = class SDB {
                switch (entityObj[dataType]) {
                   case "http": break;
                   case "wss": break;
+                  case "wsst": break;
                   case "webrtc": break;
                   default:
                      return ("\""+entityObj[dataType]+"\" is not a recognized transport.");
@@ -663,6 +664,9 @@ module.exports = class SDB {
                   returnObj.value = "wss";
                   break;
                case 2:
+                  returnObj.value = "wsst";
+                  break;
+               case 3:
                   returnObj.value = "webrtc";
                   break;
                default:
@@ -718,8 +722,8 @@ module.exports = class SDB {
                   break;
                case 2:
                   //named
-                  dataLength = entityBuffer.readUInt8(offset + 1) << 8;
-                  dataLength = dataLength | entityBuffer.readUInt8(offset + 2);
+                  dataLength = entityBuffer.readUInt8(offset + 2) << 8;
+                  dataLength = dataLength | entityBuffer.readUInt8(offset + 3);
                   typeHeaderSize += 2; //2 bytes for dataLength
                   sliceStart = typeHeaderSize + offset;
                   sliceEnd = dataLength + typeHeaderSize + offset;
@@ -743,6 +747,7 @@ module.exports = class SDB {
             break;
          case 6:
             //parameters
+            returnObj.name = "parameters";
             dataLength = entityBuffer.readUInt8(offset + 1) << 16;
             dataLength = dataLength | (entityBuffer.readUInt8(offset + 2) << 8);
             dataLength = dataLength | entityBuffer.readUInt8(offset + 3);
@@ -750,7 +755,7 @@ module.exports = class SDB {
             sliceStart = typeHeaderSize + offset;
             sliceEnd = dataLength + typeHeaderSize + offset;
             entityData = entityBuffer.slice(sliceStart, sliceEnd);
-            returnObj.value = entityData;
+            returnObj.value = entityData.toString("utf8");
             returnObj.offset = offset + dataLength + typeHeaderSize;
             break;
          case 7:
@@ -956,8 +961,11 @@ module.exports = class SDB {
                case "wss":
                   encData.push(1);
                   break;
-               case "webrtc":
+               case "wsst":
                   encData.push(2);
+                  break;
+               case "webrtc":
+                  encData.push(3);
                   break;
                default:
                   break;
