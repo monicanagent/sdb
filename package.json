@@ -1,6 +1,6 @@
 {
   "name": "sdb-node",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Services Descriptor Bundle data encoding and decoding library for Node.js.",
   "main": "index.js",
   "scripts": {

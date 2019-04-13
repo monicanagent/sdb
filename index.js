@@ -3,7 +3,7 @@
 /**
 * @file Services Descriptor Bundle encoding and decoding library.
 *
-* @version 0.2.1
+* @version 0.2.2
 * @author Patrick Bay (Monican Agent)
 * @copyright MIT License
 */
@@ -984,7 +984,7 @@ module.exports = class SDB {
                   encData.push(2);
                   break;
                case "wss":
-                  encData.push(2);
+                  encData.push(3);
                   break;
                default:
                   break;
