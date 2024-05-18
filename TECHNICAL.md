@@ -146,7 +146,7 @@ This structure is made up of the following pieces:
 
 ### SDB Header (1 byte)
 
-1 - Version number, included for forward compatibility checking.
+Version number, included for forward compatibility checking. Currently 0.
 
 ### Entity Header (5 bytes)
 
