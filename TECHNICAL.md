@@ -2,7 +2,7 @@
 
 ## Background
 
-SDP was created for use in CypherPoker.JS connectivity establishment. It is offered independently in the hope that it may also be useful outside of this scope.
+SDB was created for use in CypherPoker.JS connectivity establishment. It is offered independently in the hope that it may also be useful outside of this scope.
 
 ## Motivation
 
@@ -337,3 +337,4 @@ This represents a `name` data reference (`7`), which points to entity `0` (`00 0
 `Version 0.1.0 to 0.1.8`: Initial release with bug fixes.<br/><br/>
 `Version 0.2.0`: Added WebSocket Sessions Tunnel transport, fixed parameters decoding, and changed SDB Header version to 1 since this version is incompatible with 0.<br/><br/>
 `Version 0.2.2`: Fixed issues with "host" and "protocol" decoding, and fixed a decoding buffer overrun caused by incorrect byte positioning.
+
