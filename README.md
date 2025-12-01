@@ -1,7 +1,7 @@
 # Services Descriptor Bundle
 
 
-SDP is an efficient and compact binary format used for connectivity establishment between peers, clients, and servers, designed for CypherPoker.JS
+SDB is an efficient and compact binary format used for connectivity establishment between peers, clients, and servers, designed for CypherPoker.JS
 
 Detailed background and technical information can be found in [TECHNICAL.md](./TECHNICAL.md)
 
